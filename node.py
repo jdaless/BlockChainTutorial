@@ -1,6 +1,5 @@
 from blockChain import *
 from transactions import *
-from validation import *
 
 # Initialize the transaction buffer and set the block size
 blockSizeLimit = 3
@@ -45,7 +44,7 @@ while(True):
             state={"Charlie":50, "Ada":50}
         else:
             state = {command[1]:int(command[2])}
-        chain = BlockChain(state)
+        chain = BlockChain(state,isValidData,updateState)
 
     elif(command[0] == "save"):
         f = open('BlockChain.json', 'w')
@@ -55,15 +54,16 @@ while(True):
     elif(command[0] == "import"):
         f = open('BlockChain.json', 'r')
         importChain = json.loads(f.read())
+        importBC = BlockChain(None,isValidData,updateState)
+        importBC.chain = importChain
         f.close()
-        importState = checkChain(importChain)
+        importState = importBC.checkChain()
         if(importState):
-            chain = BlockChain(None)
-            chain.chain = importChain
-        state = checkChain(chain.chain)
+            chain = importBC
+        state = chain.checkChain()
 
     elif(command[0] == "state"):
-        print(checkChain(chain.chain))
+        print(chain.checkChain())
 
     else:
         print("Not a valid command")

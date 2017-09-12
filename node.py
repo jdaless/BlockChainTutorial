@@ -45,7 +45,7 @@ while(True):
             state={"Charlie":50, "Ada":50}
         else:
             state = {command[1]:int(command[2])}
-            chain = BlockChain(state)
+        chain = BlockChain(state)
 
     elif(command[0] == "save"):
         f = open('BlockChain.json', 'w')

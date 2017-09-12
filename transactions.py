@@ -25,6 +25,8 @@ def updateState(txn, state):
             state[key] = txn[key]
     return state
 
+# This function validates each piece of data based on the business logic of the
+#   application. 
 def isValidData(txn,state):
     # Assume that the transaction is a dictionary keyed by account names
 

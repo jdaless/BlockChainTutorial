@@ -2,6 +2,7 @@ from blockChain import *
 from transactions import *
 from validation import *
 
+# Initialize the transaction buffer and set the block size
 blockSizeLimit = 3
 txnBuffer = []
 
@@ -17,16 +18,16 @@ while(True):
             txn = {fr: 0-amt,to: amt}
         txnBuffer.append(txn)
 
-        # if we have enough transactions for a block
+        # If we have enough transactions for a block, make one
         if(len(txnBuffer)>blockSizeLimit-1):
             print("Making a block...")
-            ## Gather a set of valid transactions for inclusion
             txnList = []
+
             while (len(txnBuffer) > 0) & (len(txnList) < blockSizeLimit):
                 newTxn = txnBuffer.pop()
-                validTxn = isValidData(newTxn,state) # This will return False if txn is invalid
+                validTxn = isValidData(newTxn,state)
 
-                if validTxn:           # If we got a valid state, not 'False'
+                if validTxn:
                     txnList.append(newTxn)
                     state = updateState(newTxn,state)
                 else:
@@ -34,7 +35,7 @@ while(True):
                     sys.stdout.flush()
                     continue  # This was an invalid transaction; ignore it and move on
 
-            ## Make a block
+            # Make a block
             chain.makeBlock(txnList)
         else:
             print(txnBuffer)

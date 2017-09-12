@@ -1,17 +1,21 @@
 import hashlib, json, sys
 
+# Wrapper for the python hasing algorithm
 def hashMe(msg=""):
-    # For convenience, this is a helper function that wraps our hashing algorithm
     if type(msg)!=str:
-        msg = json.dumps(msg,sort_keys=True)  # If we don't sort keys, we can't guarantee repeatability!
+        msg = json.dumps(msg,sort_keys=True)
 
     if sys.version_info.major == 2:
         return unicode(hashlib.sha256(msg).hexdigest(),'utf-8')
+
     else:
         return hashlib.sha256(str(msg).encode('utf-8')).hexdigest()
 
+# BlockChain data type.
 class BlockChain:
 
+    # Initialize the blockchain by creating a genesis block.
+    # State describes the state of data in the genesis block.
     def __init__(self, state):
         genesisBlockTxns = [state]
         genesisBlockContents = {u'blockNumber':0,u'parentHash':None,u'dataCount':1,u'data':genesisBlockTxns}
@@ -20,6 +24,8 @@ class BlockChain:
 
         self.chain = [genesisBlock];
 
+    # Not necessary for this demo, but made things look pretty in testing.
+    # Good if you want to understand the structure of a block
     def __str__(self):
         ret = ""
         for block in self.chain:
@@ -37,6 +43,9 @@ class BlockChain:
             ret = ret + "\n\thash: " + block['hash'] + "\n\n"
         return ret
 
+    # Create a new block and add it to the chain using the data
+    #   you want to put in it.
+    # Returns the block in case you need to validate it.
     def makeBlock(self, data):
         parentBlock = self.chain[-1]
         parentHash  = parentBlock[u'hash']

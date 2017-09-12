@@ -9,7 +9,7 @@ txnBuffer = []
 while(True):
     command = input("> ").split()
     if(command[0] == "transaction"):
-        if(command[1] == "rand"):
+        if(len(command) == 1):
             txn = randomTransaction();
         else:
             fr = command[1]
